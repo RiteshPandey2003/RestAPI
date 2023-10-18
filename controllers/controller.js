@@ -1,46 +1,89 @@
+const Normal = require("../models/userSchema.js");
+const Admin = require("../models/adminSchema.js")
 //normal user data
 const getnormalData = async (req, res) => {
-  res.status(200).json({ msg: " get normal  user Route" });
+  const allDBusers = await Normal.find({});
+  return res.json(allDBusers);
 };
 const postnormalData = async (req, res) => {
-  res.status(200).json({ msg: " post normal  user Route" });
+  const body = req.body;
+  console.log(req.body.username);
+  const result = await Normal.insertMany(req.body)
+  res.send(result);
 };
-const patchnormalData = async (req, res) => {
-  res.status(200).json({ msg: " patch normal  user Route" });
-};
+
 const deletenormalData = async (req, res) => {
-  res.status(200).json({ msg: " delete normal  user Route" });
+  const userId = req.params.id;
+
+  try {
+    // Use Mongoose to find and delete the user by ID
+    const deletedUser = await Normal.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server error' });
+  }
 };
 const putnormalData = async (req, res) => {
-  res.status(200).json({ msg: " put  normal  user Route" });
+  const userid = req.params.id;
+  
+  const product = await Normal.findByIdAndUpdate(userid);
+  if (!product) return res.status(404).send('The product with the given ID was not found.');
+
+  res.send(product);
 };
+
 
 //admin data
 const getadminData = async (req, res) => {
-  res.status(200).json({ msg: "get admin Route" });
+  const allDBusers = await Admin.find({});
+  return res.json(allDBusers);
 };
 const postadminData = async (req, res) => {
-  res.status(200).json({ msg: " post normal admin Route" });
+  const body = req.body;
+  console.log(req.body.username);
+  const result = await Admin.insertMany(req.body)
+  res.send(result);
 };
-const patchadminData = async (req, res) => {
-  res.status(200).json({ msg: " patch normal admin Route" });
-};
+
 const deleteadminData = async (req, res) => {
-  res.status(200).json({ msg: " delete normal admin Route" });
+  const userId = req.params.id;
+
+  try {
+    // Use Mongoose to find and delete the user by ID
+    const deletedUser = await Admin.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server error' });
+  }
 };
 const putadminData = async (req, res) => {
-  res.status(200).json({ msg: " put  normal admin Route" });
+  const userid = req.params.id;
+  
+  const product = await Admin.findByIdAndUpdate(userid);
+  if (!product) return res.status(404).send('The product with the given ID was not found.');
+
+  res.send(product);
 };
 
 module.exports = {
   getnormalData,
   postnormalData,
-  patchnormalData,
   putnormalData,
   deletenormalData,
   getadminData,
   postadminData,
-  patchadminData,
   deleteadminData,
   putadminData,
 };

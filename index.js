@@ -9,6 +9,9 @@ const dburl = process.env.dburl;
 //connect 
 connectMongo(dburl)
 
+//middleware
+app.use(express.json())
+
 //Route
 app.use('/', route)
 
